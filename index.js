@@ -11,6 +11,11 @@ function wrapWithPlaygroundAppContainer(App) {
         return this._startPolling();
       }
 
+      // Temporarily polling always, until shakeDevice is implemented for Android
+      // simulators on Appetize. This is just a fallback in case the location
+      // change hack doesn't work for some reason
+      this._startPolling();
+
       // Temporary hack until Appetize supports shake on Android simulators
       if (Platform.OS === 'android') {
         let firstUpdateComplete = false;
