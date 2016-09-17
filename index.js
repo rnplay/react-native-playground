@@ -5,6 +5,10 @@ import Exponent from 'exponent';
 function wrapWithPlaygroundAppContainer(App) {
   class PlaygroundApp extends React.Component {
     componentWillMount() {
+      if (Exponent.Constants.isDevice) {
+        return this._startPolling();
+      }
+
       // Temporary hack until Appetize supports shake on Android simulators
       if (Platform.OS === 'android') {
         let firstUpdateComplete = false;
@@ -22,6 +26,25 @@ function wrapWithPlaygroundAppContainer(App) {
       }
     }
 
+    _startPolling = async () => {
+      let lastUpdatedAt = await this._fetchLastUpdatedAsync();
+
+      setInterval(async () => {
+        let updatedAt = await this._fetchLastUpdatedAsync();
+        if (lastUpdatedAt !== updatedAt) {
+          NativeModules.ExponentUtil.reload();
+        }
+      }, 5000);
+    }
+
+    _fetchLastUpdatedAsync = async () => {
+      let { id } = this.props.exp.manifest;
+      let urlToken = id.split('/')[1];
+      let response = await fetch(`https://rnplay.org/apps/${urlToken}/last_updated`);
+      let result = await response.json();
+      return result.updated_at;
+    }
+
     render() {
       return <App />
     }
@@ -30,6 +53,6 @@ function wrapWithPlaygroundAppContainer(App) {
   return PlaygroundApp;
 }
 
-export function registerComponent(App) {
-  return AppRegistry.registerComponent('main', () => wrapWithPlaygroundAppContainer(App));
+function registerComponent(App) {
+  return Exponent.registerRootComponent(wrapWithPlaygroundAppContainer(App));
 }
