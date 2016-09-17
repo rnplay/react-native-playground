@@ -47,7 +47,13 @@ function wrapWithPlaygroundAppContainer(App) {
     _fetchLastUpdatedAsync = async () => {
       let { id } = this.props.exp.manifest;
       let urlToken = id.split('/')[1];
-      let response = await fetch(`https://rnplay.org/apps/${urlToken}/last_updated`);
+      let opts = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      };
+      let response = await fetch(`https://rnplay.org/apps/${urlToken}/last_updated`, opts);
       let result = await response.json();
       return result.updated_at;
     }
