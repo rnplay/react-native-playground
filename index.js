@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, Platform, NativeModules } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import Exponent from 'exponent';
 
 function wrapWithPlaygroundAppContainer(App) {
@@ -55,6 +55,6 @@ function wrapWithPlaygroundAppContainer(App) {
   return PlaygroundApp;
 }
 
-function registerComponent(App) {
+export function registerComponent(App) {
   return Exponent.registerRootComponent(wrapWithPlaygroundAppContainer(App));
 }
