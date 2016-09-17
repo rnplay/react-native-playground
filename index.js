@@ -5,7 +5,9 @@ import Exponent from 'exponent';
 function wrapWithPlaygroundAppContainer(App) {
   class PlaygroundApp extends React.Component {
     componentWillMount() {
-      if (Exponent.Constants.isDevice) {
+      // Poll on device, and also (temporarily) on iOS, until shake is
+      // implemented for Exponent
+      if (Exponent.Constants.isDevice || Platform.OS === 'ios') {
         return this._startPolling();
       }
 
