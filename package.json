@@ -1,0 +1,13 @@
+{
+  "name": "react-native-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "exponent": "*"
+  },
+  "author": "Brent Vatne <brentvatne@gmail.com>",
+  "license": "MIT"
+}
